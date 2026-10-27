@@ -1,0 +1,17 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const mentorController_1 = require("../controllers/mentorController");
+const authMiddleware_1 = require("../middlewares/authMiddleware");
+const types_1 = require("../types");
+const router = (0, express_1.Router)();
+router.use(authMiddleware_1.authenticateToken);
+router.use((0, authMiddleware_1.requireRole)(types_1.Role.MENTOR, types_1.Role.ADMIN, types_1.Role.HOD));
+router.get('/dashboard', mentorController_1.getDashboard);
+router.get('/mentees', mentorController_1.getAssignedMentees);
+router.get('/mentees/:menteeId', mentorController_1.getMenteeDetail);
+router.post('/recommendations', mentorController_1.createRecommendation);
+router.post('/tasks', mentorController_1.createTask);
+router.post('/private-notes', mentorController_1.createPrivateNote);
+router.put('/tasks/:id/verify', mentorController_1.verifyTask);
+exports.default = router;

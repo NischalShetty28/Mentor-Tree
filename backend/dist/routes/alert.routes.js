@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const alertController_1 = require("../controllers/alertController");
+const authMiddleware_1 = require("../middlewares/authMiddleware");
+const types_1 = require("../types");
+const router = (0, express_1.Router)();
+router.use(authMiddleware_1.authenticateToken);
+router.get('/', alertController_1.getRiskAlerts);
+router.put('/:id', (0, authMiddleware_1.requireRole)(types_1.Role.MENTOR, types_1.Role.ADMIN, types_1.Role.HOD), alertController_1.updateRiskAlertStatus);
+exports.default = router;

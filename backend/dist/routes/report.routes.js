@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const reportController_1 = require("../controllers/reportController");
+const authMiddleware_1 = require("../middlewares/authMiddleware");
+const types_1 = require("../types");
+const router = (0, express_1.Router)();
+router.use(authMiddleware_1.authenticateToken);
+router.get('/student-progress', reportController_1.exportStudentProgressReport);
+router.get('/academics', (0, authMiddleware_1.requireRole)(types_1.Role.MENTOR, types_1.Role.ADMIN, types_1.Role.HOD), reportController_1.exportAcademicReport);
+router.get('/attendance', (0, authMiddleware_1.requireRole)(types_1.Role.MENTOR, types_1.Role.ADMIN, types_1.Role.HOD), reportController_1.exportAttendanceReport);
+router.get('/mentor-workload', (0, authMiddleware_1.requireRole)(types_1.Role.ADMIN, types_1.Role.HOD), reportController_1.exportMentorWorkloadReport);
+router.get('/risk-interventions', (0, authMiddleware_1.requireRole)(types_1.Role.MENTOR, types_1.Role.ADMIN, types_1.Role.HOD), reportController_1.exportRiskReport);
+exports.default = router;
